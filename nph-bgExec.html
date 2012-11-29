@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Periodogram Viewer</title>
+
+
+    <script type="text/javascript" src="nph-bgExec_files/util.js"></script>
+    <script type="text/javascript" src="nph-bgExec_files/nPgram.js"></script>
+    <script type="text/javascript" src="nph-bgExec_files/pgConstraint.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="all" href="nph-bgExec_files/style.css">
+      <link rel="stylesheet" type="text/css" media="all" href="nph-bgExec_files/stretch.css">
+	<link rel="stylesheet" type="text/css" media="all" href="nph-bgExec_files/nPgram.css">
+
+  <script type="text/javascript" src="nph-bgExec_files/util.js"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="nph-bgExec_files/style.css">
+  <link rel="stylesheet" type="text/css" media="all" href="nph-bgExec_files/stretch.css">
+<script>try {  for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){    var lastpass_f = document.forms[lastpass_iter];    if(typeof(lastpass_f.lpsubmitorig)=="undefined"){      if (typeof(lastpass_f.submit) == "function") {        lastpass_f.lpsubmitorig = lastpass_f.submit;        lastpass_f.submit = function(){          var form = this;          try {            if (document.documentElement && 'createEvent' in document)            {              var forms = document.getElementsByTagName('form');              for (var i=0 ; i<forms.length ; ++i)                if (forms[i]==form)                {                  var element = document.createElement('lpformsubmitdataelement');                  element.setAttribute('formnum',i);                  element.setAttribute('from','submithook');                  document.documentElement.appendChild(element);                  var evt = document.createEvent('Events');                  evt.initEvent('lpformsubmit',true,false);                  element.dispatchEvent(evt);                  break;                }            }          } catch (e) {}          try {            form.lpsubmitorig();          } catch (e) {}        }      }    }  }} catch (e) {}</script></head>
+<body>
+  <div id="content">
+  <div class="bbox">
+  <div class="b2box">
+
+<div id="banner">
+<a href="http://exoplanetarchive.ipac.caltech.edu/index.html"><img src="nph-bgExec_files/nsted_banner.jpg" alt="NStED banner"></a>
+</div>
+<div class="hbox">
+<table>
+<tbody><tr>
+  <td>&nbsp; &nbsp; &nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/index.html">Home</a></td>
+  <td>&nbsp; | &nbsp; &nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/docs/intro.html">Overview and Holdings</a></td>
+  <td> &nbsp;&nbsp; | &nbsp;&nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/docs/documentation.html">Documentation</a></td>
+  <td> &nbsp;&nbsp; | &nbsp;&nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/applications/Helpdesk">Helpdesk</a></td>
+  <td> &nbsp;&nbsp; &nbsp;&nbsp; </td>
+</tr>
+</tbody></table>
+</div>
+<!-- end hbox div -->
+<div class="output">
+
+
+<h1 class="pgramtitle"><font color="#00356f">NASA Exoplanet Archive Periodogram Service</font></h1>
+
+
+<div style="width:85%;margin:0 auto;">
+<hr class="hrs">
+<div style="height:15px; overflow:hidden;margin:0 auto;">
+
+	<div class="pgtoplink"><a class="pgramlinks" href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/About.html" target="_blank">About</a></div>
+ 	<div class="pgtoplink"><a class="pgramlinks" href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/QuickStart.html" target="_blank">Usage</a></div>
+	<div class="pgtoplink"><a class="pgramlinks" href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/Performance.html" target="_blank">Performance</a></div>
+        <div class="pgtoplink"><a class="pgramlinks" href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/error_messages.html" target="_blank">Troubleshooting</a></div>
+   	<div class="pgtoplink"><a class="pgramlinks" href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/Algorithms.html" target="_blank">Algorithms</a></div>
+	<div class="pgtoplink"><a class="pgramlinks" href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/Parameters.html" target="_blank">Parameters</a></div>
+
+
+
+
+
+</div>
+<hr class="hrs">
+</div>
+
+
+<div style="width:95%;margin:0 auto;">
+
+<div style="float:left;width:60%;">
+
+<table border="0" cellspacing="0">
+  <tbody><tr>
+     <th align="center" bgcolor="#00356f">
+		  <a style="color:#FFFFFF; font-size: 1.6em;" href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodogramType.html')">
+		    Periodogram
+
+<!--
+		    <font size="+2" color="white">Periodogram
+		    </font>
+-->
+		  </a>
+
+		  <input name="Button" style="font-weight:bolder;" value="Download" onclick="window.open('http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666/newtable.txt.out', 'download');
+		    return false;" class="hoverbut" type="button">
+
+    </th>
+  </tr>
+
+  <tr>
+  <td style="padding-top:2px; font-size: .85em; font-weight:bold;" align="center" bgcolor="#00356f">
+  <font color="white">Linear</font><input id="pscale_id" name="pscale_radio" value="linear" onchange="pgram_replot(document.pgargs_f.directory.value, 'linear');" type="radio">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <font color="white">Log</font><input id="pscale_id" name="pscale_radio" value="log" checked="checked" onchange="pgram_replot(document.pgargs_f.directory.value, 'log');" type="radio">
+  </td>
+
+  </tr>
+  <tr>
+		<!-- Row 1: periodogram plot -->
+                 <td><img id="pgram_pix" src="nph-bgExec_files/newtable.jpg" alt="Periodogram" style="width:100%; height:auto;" border="1"></td>
+  </tr>
+
+  <tr>
+    <td>
+      <div style="height:200px;width:100%;overflow:auto;">
+	  <table border="1" cellpadding="5" cellspacing="0" width="100%">
+	  <tbody><tr align="center" bgcolor="#00356f">
+	  <th colspan="5"><a style="color: #FFFFFF" href="javascript:popHelp('/applications/Periodogram/help/phelp_PeakSignificanceThreshold.html')">
+	     Most Significant Periods
+          </a>
+	    <input name="Button" style="font-weight:bolder;" value="Download" onclick="window.open('http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666/newtable.txt.out.top', 'download');
+		  return false;" class="hoverbut" type="button">
+	  </th>
+	  </tr>
+	  <tr align="center" bgcolor="#00356f">
+	      <th><a style="color: #FFFFFF;" href="javascript:popHelp('/applications/Periodogram/help/phelp_TopRank.html')">
+		  Rank
+              </a></th>
+	      <th><a style="color: #FFFFFF;" href="javascript:popHelp('/applications/Periodogram/help/phelp_TopPeriod.html')">
+		  Period
+              </a></th>
+	      <th><a style="color: #FFFFFF;" href="javascript:popHelp('/applications/Periodogram/help/phelp_TopPower.html')">
+		  Power
+              </a></th>
+	      <th><a style="color: #FFFFFF;" href="javascript:popHelp('/applications/Periodogram/help/phelp_TopPValue.html')">
+		  P-value
+              </a></th>
+	      <th><a style="color: #FFFFFF;" href="javascript:popHelp('/applications/Periodogram/help/phelp_TopLink.html')">
+		  Link
+              </a></th>
+
+
+          </tr>
+	      
+          <tr align="center" bgcolor="#f0f0f0">
+		      <td>1</td>
+		      <td>25.046131</td>
+		      <td>0.000000</td>
+		      <td>4.98755e-07</td>
+		      <td><a href="http://exoplanetarchive.ipac.caltech.edu/cgi-bin/Periodogram/nph-phaselc?l=1&amp;infile=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&amp;directory=/work/TMP_WBXPtk_553/Pgram/14666&amp;url=http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666&amp;HostURL=http://exoplanetarchive.ipac.caltech.edu&amp;p=25.046131&amp;a=bls&amp;i=1&amp;x=time&amp;y=data&amp;Y=&amp;T=&amp;X=none&amp;w=-32768.000000&amp;W=-32768.000000&amp;xml=0" target="_blank">Phased curve</a></td>
+          </tr>
+	    
+          <tr align="center" bgcolor="#f0f0f0">
+		      <td>2</td>
+		      <td>12.601072</td>
+		      <td>0.000000</td>
+		      <td>0.025537</td>
+		      <td><a href="http://exoplanetarchive.ipac.caltech.edu/cgi-bin/Periodogram/nph-phaselc?l=1&amp;infile=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&amp;directory=/work/TMP_WBXPtk_553/Pgram/14666&amp;url=http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666&amp;HostURL=http://exoplanetarchive.ipac.caltech.edu&amp;p=12.601072&amp;a=bls&amp;i=2&amp;x=time&amp;y=data&amp;Y=&amp;T=&amp;X=none&amp;w=-32768.000000&amp;W=-32768.000000&amp;xml=0" target="_blank">Phased curve</a></td>
+          </tr>
+	    
+          <tr align="center" bgcolor="#f0f0f0">
+		      <td>3</td>
+		      <td>50.828329</td>
+		      <td>0.000000</td>
+		      <td>0.999962</td>
+		      <td><a href="http://exoplanetarchive.ipac.caltech.edu/cgi-bin/Periodogram/nph-phaselc?l=1&amp;infile=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&amp;directory=/work/TMP_WBXPtk_553/Pgram/14666&amp;url=http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666&amp;HostURL=http://exoplanetarchive.ipac.caltech.edu&amp;p=50.828329&amp;a=bls&amp;i=3&amp;x=time&amp;y=data&amp;Y=&amp;T=&amp;X=none&amp;w=-32768.000000&amp;W=-32768.000000&amp;xml=0" target="_blank">Phased curve</a></td>
+          </tr>
+	    
+          <tr align="center" bgcolor="#f0f0f0">
+		      <td>4</td>
+		      <td>18.858893</td>
+		      <td>0.000000</td>
+		      <td>0.999999</td>
+		      <td><a href="http://exoplanetarchive.ipac.caltech.edu/cgi-bin/Periodogram/nph-phaselc?l=1&amp;infile=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&amp;directory=/work/TMP_WBXPtk_553/Pgram/14666&amp;url=http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666&amp;HostURL=http://exoplanetarchive.ipac.caltech.edu&amp;p=18.858893&amp;a=bls&amp;i=4&amp;x=time&amp;y=data&amp;Y=&amp;T=&amp;X=none&amp;w=-32768.000000&amp;W=-32768.000000&amp;xml=0" target="_blank">Phased curve</a></td>
+          </tr>
+	    
+          <tr align="center" bgcolor="#f0f0f0">
+		      <td>5</td>
+		      <td>10.707780</td>
+		      <td>0.000000</td>
+		      <td>1</td>
+		      <td><a href="http://exoplanetarchive.ipac.caltech.edu/cgi-bin/Periodogram/nph-phaselc?l=1&amp;infile=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&amp;directory=/work/TMP_WBXPtk_553/Pgram/14666&amp;url=http://exoplanetarchive.ipac.caltech.edu//workspace/TMP_WBXPtk_553/Pgram/14666&amp;HostURL=http://exoplanetarchive.ipac.caltech.edu&amp;p=10.707780&amp;a=bls&amp;i=5&amp;x=time&amp;y=data&amp;Y=&amp;T=&amp;X=none&amp;w=-32768.000000&amp;W=-32768.000000&amp;xml=0" target="_blank">Phased curve</a></td>
+          </tr>
+	    
+          </tbody></table>
+      </div>
+    </td>			
+  </tr>
+
+  <tr>
+		<!-- Row 4: Info about top table -->
+
+
+   <td width="100%">
+		  <font color="#00356f">
+		    <i>
+The P-values above are computed for <b>111</b> periods sampled, and a Gaussian power distribution is assumed.  The mean power for this set of periods is <b>0.0000</b> and the standard deviation is <b>0.0000</b>. <b style="font-size:1.15em;">A note of caution when interpreting the results from the periodogram: </b>The
+ calculated statistical significance (p-value) of ranked periods may not
+ be reliable.  Several factors may invalidate the assumptions applied in
+ estimating the statistical significance.  To learn more, please review 
+our <a href="http://exoplanetarchive.ipac.caltech.edu/applications/Periodogram/docs/Algorithms.html" target="_blank">algorithms</a> page.</i>
+
+		  </font>
+    </td>
+  </tr>						
+</tbody></table>
+
+</div>
+
+<div style="float:left;width:40%;">
+		  <!-- Not intended to be a stand-alone piece of html: needs header/body wrapper -->
+
+<!--
+<RTBIGNVARS>
+workspace=/work/TMP_WBXPtk_553/Pgram/14666 
+baseurl=/workspace/TMP_WBXPtk_553/Pgram/14666
+</RTBIGNVARS>
+<RTBINFOVARS>
+workspace=/work/TMP_WBXPtk_553/Pgram/14666
+baseurl=/workspace/TMP_WBXPtk_553/Pgram/14666
+tsviewer=/cgi-bin/Periodogram/nph-pgramlcview?infile-2=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&a=ls&l=0&long=0&fcheck=0&constrsect=0&periodscale=lin&doperiod=1&x=time&y=data
+infile=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt
+</RTBINFOVARS>
+-->
+  <form name="pgargs_f" method="post" action="/cgi-bin/bgProxyServices/nph-bgExec" enctype="multipart/form-data" id="inputForm">
+  <input name="bgApp" value="/Periodogram/nph-periodogram" type="hidden">
+  <input name="noconvert" value="0" type="hidden">
+  <input name="fcheck" value="0" type="hidden">
+  <input name="periodscale" value="calc" type="hidden">
+
+    <table class="pgram"> 
+	    <tbody><tr>
+	      <th colspan="2" align="center" bgcolor="#00356f">
+		<font color="#ffffff">Input</font>
+		<br>
+		  <input value="Create Periodogram" class="hoverbut" onclick="if(checkConstraint() == false) return false;  return true;" type="submit"> 
+	      </th>
+	      <th style="display:;" align="center" bgcolor="#00356f"> 
+		<font color="#ffffff">Current Values</font>
+		<br>
+		  <input name="reset" value="Reset" class="hoverbut" type="reset">
+	      </th>
+	    </tr>
+
+	    <tr>
+	      <td class="col1">
+		<a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodogramType.html')">
+		  Periodogram type
+		</a>
+	      </td>
+	      
+	      <td class="col2">
+                <div>
+                  <input name="a" id="lsRadio" onclick="javascript:changePeriodogramType()" value="ls" type="radio"> 
+  	          <a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodogramType_LombScargle.html')">
+     	          Lomb&#8209;Scargle
+	          </a>
+                </div>
+		<div>
+                 <input name="a" id="blsRadio" onclick="javascript:changePeriodogramType()" value="bls" checked="checked" type="radio">
+                 <a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodogramType_BLS.html')">
+	         BLS
+                 </a>
+		</div>
+                <div>
+                 <input name="a" id="plavRadio" onclick="javascript:changePeriodogramType()" value="plav" type="radio">
+		 <a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodogramType_Plavchan.html')">
+	         Plavchan
+		 </a>
+		</div>
+		<input id="PeriodogramType" value="bls" type="hidden">
+             </td>
+
+      <td style="display:;" class="col3">
+	<input disabled="disabled" id="oldPeriodogramType" size="12" value="BLS">
+      </td>
+      
+    </tr>
+
+      <!-- Modified input file row -->
+      <tr style="display:;">
+	<td class="col1">
+	  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_InputFile.html')">
+	    Input&nbsp;file
+	  </a>
+	</td>
+	<td class="col2" style="word-wrap:break-word" onmouseover="javascript:window.status='newtable.txt'; return true;">
+	  <b>newtable.txt</b>
+	  <br>
+	    <i>Number of points: 120542</i>
+	</td>
+
+	<td style="display:;" class="col3">
+	    <input name="tsvid" value="" type="hidden">
+
+	  <input style="font-weight:bolder" value="View Time Series" class="hoverbut" onclick="window.open('/cgi-bin/Periodogram/nph-pgramlcview?infile-2=/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt&amp;a=ls&amp;l=0&amp;long=0&amp;fcheck=0&amp;constrsect=0&amp;periodscale=lin&amp;doperiod=1&amp;x=time&amp;y=data')" type="button">
+	</td>
+
+      </tr>
+
+      <tr id="intbl_upload_arg" style="display:none;">
+	<td class="col1">
+	  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_InputFile.html')">
+	    Input&nbsp;file
+	  </a>
+	</td>
+	<td class="col2">
+	  <table class="fileTable" width="100%">
+	    <tbody><tr>
+	      <td colspan="2" class="ft2">
+		<input name="infile" id="intblUpload" size="20" value="newtable.txt" onchange="javascript:enableUploadButton()" type="file">	
+	      </td>
+	    </tr>
+	    <tr id="FileFormatRow" style="display:none">
+	      <td class="ft1">
+		Format
+	      </td>
+	      <td class="ft2">
+		<table>
+		  <tbody><tr>
+		    <td valign="top">
+		      <input id="fitsRadio" onclick="javascript:changeFileType(this.value)" value="fits" type="radio">
+			FITS
+		    </td>
+		    <td valign="top">
+		      <input id="asciiRadio" onclick="javascript:changeFileType(this.value)" value="ascii" type="radio">
+			ASCII
+		    </td>
+		  </tr>
+		</tbody></table>
+	      </td>
+	    </tr>
+	    <tr style="display:none" id="FitsRow">
+	      <td class="ft1">
+		Header Data Unit
+		<br>
+		  <i>Note: FITS file upload may take up to 2 minutes</i>
+	      </td>
+	      <td class="ft2">
+		<input name="hdu" id="FitsHeaderDataUnit" size="5" disabled="disabled" type="text">
+	      </td>
+	    </tr>
+	    
+	  </tbody></table>
+	  <input name="check" id="UploadButton" class="hoverbut" onclick="javascript:resetUploadButton()" value="Upload" type="submit">
+	</td>
+	<td style="display:;" class="col3">
+	  <input disabled="disabled" id="oldIntblUpload" size="12" value="newtable.txt">
+	</td>
+      </tr>
+      <!-- input file and columns-->
+
+      <tr id="intbl_arg" style="display:none;">
+	<td class="col1">
+	  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_InputFile.html');">
+	    Input File
+	  </a>
+	</td>
+	<td class="col2">
+	  <input name="infile" id="InputFile" onchange="javascript:updateFields('0', '0')" size="20" value="/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt" readonly="readonly" type="text"> 
+	  <input name="infile-2" id="InputFile" onchange="javascript:updateFields('0', '0')" size="20" value="/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt" readonly="readonly" type="text"> 
+	</td>
+	<td class="col3" style="display:;">
+	  <input readonly="readonly" id="oldInputFile" size="12" value="/work/TMP_WBXPtk_553/Pgram/7759/newtable.txt" type="text"> 	  
+	</td>
+      </tr>
+
+      <!-- DISPLAY THIS for upload screen and disable id="fileParameters" -->
+      </tbody><tbody id="altFileParameters" style="display:none;">
+	<tr>
+	  <td class="col1">
+	    <a href="javascript:popHelp('/applications/Periodogram/help/phelp_TimeColumn.html')">
+	      Time column
+	    </a>
+	  </td>
+	  <td class="col2">
+	    <input name="x" id="TimeColumn1" size="12" type="text">
+	  </td>
+	</tr>
+	<tr>
+	  <td class="col1">
+	    <a href="javascript:popHelp('/applications/Periodogram/help/phelp_DataColumn.html')">
+	      Data column
+	    </a>
+	  </td>
+	  <td class="col2">
+	    <input name="y" id="DataColumn1" size="12" type="text">
+	  </td>
+	</tr>
+      </tbody>
+
+      <!-- DISPLAY THIS for result/post-upload screen and disable 
+      id="altFileParameters" -->
+
+      <tbody id="fileParameters" style="display:;">
+	<tr>
+	  <td class="col1">
+	    <a href="javascript:popHelp('/applications/Periodogram/help/phelp_TimeColumn.html')">
+	      Time column
+	    </a>
+	  </td>
+	  <td class="col2">
+
+	    <select name="x" id="TimeColumn" onchange="javascript:updateFields('1', '1'); updateConstraintCol();">
+	      
+	      <option value="time" selected="selected">time</option>
+	      
+	      <option value="data">data</option>
+	      
+	      <option value="cntr">cntr</option>
+	       
+	    </select>
+	    <br>
+	      <i>Min: 0.0003, Max: 119.9996</i>
+	  </td>
+	  <td style="display:;" class="col3">
+	    <input disabled="disabled" id="oldTimeColumn" size="12" value="time" type="text">
+	  </td>
+	</tr>
+	<tr>
+	  <td class="col1">
+	    <a href="javascript:popHelp('/applications/Periodogram/help/phelp_DataColumn.html')">
+	      Data column
+	    </a>
+	  </td>
+	  <td class="col2">
+	    <select name="y" id="DataColumn" onchange="javascript:updateFields('1', '1'); updateConstraintCol();">
+
+	      
+	      <option value="time">time</option>
+	      
+	      <option value="data" selected="selected">data</option>
+	      
+	      <option value="cntr">cntr</option>
+	      
+	    </select>
+	    
+	    <br>
+	      <i>Min: 0.0000, Max: 0.0003</i>
+	  </td>
+	  
+	  <td style="display:;" class="col3">
+	    <input disabled="disabled" id="oldDataColumn" size="12" value="data">
+	  </td>
+	</tr>
+	<tr style="display:none;">
+	  <td class="col1">"Y" error column</td>
+	  <td class="col2">
+	    <input name="Y" id="DataErrorColumn" size="12" type="text">
+          </td>
+          <td style="display:;" class="col3">
+            <input disabled="disabled" id="oldDataErrorColumn" size="12" type="text">
+          </td>
+  </tr>			
+
+
+
+  <!-- tsinfo row -->
+    </tbody>
+
+
+<!-- CONSTRAINT RANGE BEGIN  -->
+  <tbody><tr><td colspan="0"> </td></tr>
+  <tr>
+    <th colspan="3" align="center" bgcolor="#00356f">
+      <font color="#ffffff">Constraints Range</font>
+    </th>
+    <th style="display:;"></th>
+  </tr>
+
+  <tr>
+    <th colspan="3" align="center" bgcolor="#c0c0c0">
+    <a href="javascript:showCon();" style="font-size: .85em;">Show</a>  /  <a href="javascript:hideCon()" style="font-size: .85em;"> Hide</a>
+    <input name="constrsect" value="0" type="hidden">
+    </th>
+    <th style="display:;"></th>
+  </tr>
+
+
+  <tr style="display: none;" id="xconstraintRange">
+    <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_ConstraintColumn.html')">
+	 Time Constraint column
+	</a>
+    </td>
+    <td class="col2">
+    <div>
+       <div id="xconstraint_err">&nbsp;</div>
+       <input name="dox" id="dox_id" value="0" type="hidden"> 
+
+       <div>
+          <div style="float:left;width:30px">Min</div>
+	  <div style="float:left;">  <input name="wx" id="xConstraintRangeMin" size="12" type="text"> </div>
+       </div>
+       <div style="clear:both">
+          <div style="float:left;width: 30px;">Max</div>
+	  <div style="float:left;">  <input name="WX" id="xConstraintRangeMax" size="12" type="text"> </div>
+       </div>
+    </div>
+    </td>
+
+    <td style="display:;" class="col3">
+       <div>
+          <div>&nbsp;</div>
+	  <div>  <input disabled="disabled" id="oldxConstraintRangeMin" size="12" type="text"> </div>
+	  <div>  <input disabled="disabled" id="oldxConstraintRangeMax" size="12" type="text"> </div>
+       </div>
+
+    </td>
+  </tr>
+
+
+  <tr style="display: none;" id="yconstraintRange">
+    <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_ConstraintColumn.html')">
+	 Data Constraint column
+	</a>
+    </td>
+    <td class="col2">
+    <div>
+       <div id="yconstraint_err">&nbsp;</div>
+       <input name="doy" id="doy_id" value="0" type="hidden"> 
+
+       <div>
+          <div style="float:left;width:30px">Min</div>
+          <div style="float:left;"><input name="wy" id="yConstraintRangeMin" size="12" type="text"></div>
+       </div>
+       <div style="clear:both">
+          <div style="float:left;width: 30px;">Max</div>
+	  <div style="float:left">
+             <input name="WY" id="yConstraintRangeMax" size="12" type="text">
+	  </div>
+       </div>
+       </div>
+    
+
+    </td>
+    <td style="display:;" class="col3">
+     <div>
+        <div>&nbsp;</div>
+        <div> <input disabled="disabled" id="oldyConstraintRangeMin" size="12" type="text"></div>
+        <div><input disabled="disabled" id="oldyConstraintRangeMax" size="12" type="text"></div>
+     </div>
+
+    </td>
+  </tr>
+
+
+    <tr style="display: none;" id="constraintRange">
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_ConstraintRange.html')">
+	  Constraint range
+	</a>
+      </td>
+
+      <td class="col2">
+      <div>
+         <div> 
+            <div style="float:left"><a href="javascript:popHelp('/applications/Periodogram/help/phelp_ConstraintColumn.html')"> Column</a>
+
+	             <select name="X" id="ConstraintColumn" "="">
+	                 <option selected="selected" value="none">None</option>
+       	                        
+	                 <option disabled="disabled" value="time">time</option>
+	                         
+	                 <option disabled="disabled" value="data">data</option>
+	                         
+	                 <option value="cntr">cntr</option>
+	                         		
+                    </select>
+	    </div>
+         </div>
+         <div style="clear:both">
+	    <div style="float:left;width:30px;">Min</div>
+            <div style="float:left;"><input name="w" id="ConstraintRangeMin" size="12" type="text"></div>
+         </div>
+	 <div style="clear:both">
+	    <div style="float:left;width:30px;">Max</div>
+	    <div style="float:left;"> <input name="W" id="ConstraintRangeMax" size="12" type="text"></div>
+	 </div>
+
+
+
+
+      </div>
+
+	</td>
+
+        <td style="display:;" class="col3">
+	<div>
+	   <div>&nbsp;</div>
+           <div><input disabled="disabled" id="oldConstraintRangeMin" size="12" type="text"></div>
+	   <div><input disabled="disabled" id="oldConstraintRangeMax" size="12" type="text"></div>
+        </div>
+
+        </td>
+     </tr>
+
+     <script type="text/javascript">
+     if (document.pgargs_f.constrsect.value == "0")
+         hideCon();
+     else
+         showCon();
+
+     updateConstraintCol();
+     </script>
+
+<!--- CONSTRAINT RANGE END  -->
+
+
+
+
+  <tr><td colspan="0"> </td></tr>
+  <tr>
+    <th colspan="3" align="center" bgcolor="#00356f">
+      <font color="#ffffff">Adjustable Periodogram Parameters</font>
+    </th>
+    <th style="display:;"></th>
+  </tr>
+  <tr style="display:;">
+    <td class="col2w" colspan="3" id="TimeEstimate">
+      <i>
+	<b>
+	  The estimated time for processing is 15s
+	</b>
+      </i>      
+    </td>
+  </tr>
+
+	  <!--  period range -->
+
+
+	  <tr><td colspan="0"> </td></tr>
+	  <tr>
+	    <td class="col1" colspan="3">
+	      <table class="toggle" width="100%">
+		<tbody><tr>
+		  <td class="col2t">
+		    <b>Period Sampling</b>
+		  </td>
+		</tr>
+	      </tbody></table>
+	    </td>
+	  </tr>
+	  
+	  </tbody><tbody id="periodParameters">
+	    <tr>
+	    <td colspan="3" class="col2">Compute Optimal Period <input name="doperiod" id="doperiod_id" value="1" onchange="optperiod_switch();" type="checkbox">
+            </td>
+           </tr>
+
+	    <tr>
+	      <td class="col1">
+		<a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodRange.html')">
+		  Period range
+		</a>
+	      </td>
+
+
+	      <td class="col2">
+		<table width="100%">
+		  <colgroup><col align="left" width="30%">
+		    <col align="left">
+
+		      </colgroup><tbody><tr>
+			<td>Min</td>
+			<td align="left">
+			  <input name="p" id="PeriodRangeMin" value="10.000000" size="12" onchange="javascript:updateFields('1', '1')" type="text">
+	               </td> 
+	             </tr>
+	             <tr>
+                      <td>Max</td>
+	              <td align="left">	<input name="P" id="PeriodRangeMax" size="12" value="100.000000" onchange="javascript:updateFields('1', '1')" type="text">
+                      </td>
+                     </tr>
+                </tbody></table>
+              </td>
+
+  <td style="display:;" class="col3">
+    <table cellpadding="0" cellspacing="0" width="100%">
+      <tbody><tr>
+	<td align="left">
+	  <input disabled="disabled" id="oldPeriodRangeMin" size="12" value="10.000000" type="text">
+	</td>
+      </tr>
+      <tr>
+	<td align="left">
+	  <input disabled="disabled" id="oldPeriodRangeMax" size="12" value="100.000000" type="text">
+	</td>  
+      </tr>
+    </tbody></table>
+  </td>
+  </tr>
+  <!-- period step type -->
+  <tr>
+    <td class="col1">
+      <a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodStepMethod.html')">
+	Period step method 
+      </a>
+    </td>
+    <td class="col2"><!-- Pulldown menu for period step: -->
+      <select name="i" id="PeriodStepMethod" onchange="showStepPanel(this.value);">
+	<option value="fixedf">Fixed df</option>
+	<option value="fixedp">Fixed dp</option>
+	<option value="exp">Exponential</option>
+	<option value="plav" selected="selected">Plavchan</option>
+      </select>
+    </td>
+    <td style="display:;" class="col3">
+      <input disabled="disabled" id="oldPeriodStepMethod" size="12" value="Plavchan">
+    </td>    		
+  </tr>
+  <!-- oversample_arg -->
+  <tr id="oversample_arg" style="display:none;">
+    <td class="col1">
+      <a href="javascript:popHelp('/applications/Periodogram/help/phelp_OversampleFactor.html')">
+	Oversample factor
+      </a>
+    </td>
+    <td class="col2">
+      <input name="o" id="OversampleFactor" size="12" value="1" onchange="javascript:setOversample(this.value)" type="text">
+    </td>
+    <td style="display:;" class="col3">
+      <input disabled="disabled" id="oldOversampleFactor" size="12" value="1" type="text">
+    </td>
+  </tr>
+  <!--  fixedfStep_arg -->
+  <tr id="fixedfStep_arg" style="display:none;">
+    <td class="col1">
+      <a href="javascript:popHelp('/applications/Periodogram/help/phelp_FrequencyStepSize.html')">
+	Fixed step size
+      </a>
+    </td>
+    <td class="col2">
+      <input name="d" id="FixedStepSize" size="12" onchange="javascript:setFixedStep(this.value)" type="text">
+    </td>
+    <td style="display:;" class="col3">
+      <input disabled="disabled" id="oldFixedStepSize" size="12" type="text">
+    </td>
+  </tr>
+  <!-- plavStep_arg -->
+  <tr id="plavStep_arg" style="display:;">
+    <td class="col1">
+      <a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeriodStepFactor.html')">
+	Period step factor
+      </a>
+    </td>
+    <td class="col2">
+      <input name="u" id="PeriodStepFactor" value="0.100000" size="12" onchange="javascript:updateFields('1', '1')" type="text">
+    </td>
+    <td style="display:;" class="col3">
+      <input disabled="disabled" id="oldPeriodStepFactor" value="0.100000" size="12" type="text">
+    </td>
+  </tr>
+  </tbody>
+
+  <tbody><tr><td colspan="0"> </td></tr>
+  <tr>
+    <td class="col1" colspan="3">
+      <table class="toggle" width="100%">
+	<tbody><tr>
+	  <td class="col2t">
+	    <b>Algorithm Settings</b>
+	  </td>
+	</tr>
+      </tbody></table>
+    </td>
+  </tr>
+  </tbody><tbody id="algoParameters">
+    <!-- plav_args -->
+    <tr id="plav_args1" style="display:none;">
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_NumberOfOutliers.html')">
+	  Number of outliers
+	</a>
+      </td>
+      <td class="col2">
+	<input name="n" id="NumberOfOutliers" value="500" size="12" type="text">
+      </td>
+      <td style="display:;" class="col3">
+	<input disabled="disabled" id="oldNumberOfOutliers" value="500" size="12" type="text">
+      </td>
+    </tr>
+    <tr id="plav_args2" style="display:none;">
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_PhaseSmoothingBoxSize.html')">
+	  Phase-smoothing box size
+	</a>
+      </td>
+      <td class="col2">
+	<input name="s" id="PhaseSmoothingBoxSize" value="0.060" size="12" type="text">
+      </td>
+      <td style="display:;" class="col3">
+	<input disabled="disabled" id="oldPhaseSmoothingBoxSize" value="0.060" size="12" type="text">
+      </td>
+    </tr>
+    <!--  bls_args -->
+    <tr id="bls_args1" style="display:;">
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_NumberOfBins.html')">
+	  Number of bins
+	</a>
+      </td>
+      <td class="col2">
+	<input name="b" id="NumberOfBins" value="20" size="12" onchange="javascript:updateFields('1', '1')" type="text">
+      </td>
+      <td style="display:;" class="col3">
+	<input disabled="disabled" id="oldNumberOfBins" value="20" size="12" type="text">
+      </td>
+    </tr>			
+    <tr id="bls_args2" style="display:;">
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_FractionOfPeriodInTransit.html')">
+	  Fraction of Period<br>in Transit
+	</a>
+      </td>
+      <td class="col2">
+	<table width="100%">
+	  <colgroup><col align="left" width="30%">
+	    <col align="left">
+	      </colgroup><tbody><tr>
+		<td align="left">Min</td>
+		<td align="left">
+		  <input name="q" id="FractionOfPeriodInTransitMin" value="0.00005" size="6" maxlength="6" type="text">
+      </td>
+    </tr>
+    <tr>
+      <td align="left">Max</td>
+      <td align="left">
+	<input name="Q" id="FractionOfPeriodInTransitMax" value="0.00050" size="6" maxlength="6" onchange="javascript:updateFields('1', '1')" type="text">
+      </td>
+    </tr>
+  </tbody></table>
+  </td>
+    <td style="display:;" class="col3">
+      <table cellpadding="0" cellspacing="0" width="100%">
+	<colgroup><col align="left" width="30%">
+	  <col align="left">
+	    </colgroup><tbody><tr>
+	      <td align="left">
+		<input disabled="disabled" id="oldFractionOfPeriodInTransitMin" value="0.00005" size="6" maxlength="6" type="text">
+	      </td>
+	    </tr>
+	    <tr>
+	      <td align="left">
+		<input disabled="disabled" id="oldFractionOfPeriodInTransitMax" value="0.00050" size="6" maxlength="6" type="text">
+	      </td>
+	    </tr>
+      </tbody></table>
+    </td>    		
+  </tr>
+  </tbody>
+
+  <!-- output parameters -->
+  <tbody><tr><td colspan="0"> </td></tr>
+  <tr>
+    <td class="col1" colspan="3">
+      <table class="toggle" width="100%">
+	<tbody><tr>
+	  <td class="col2t">
+	    <b>Output Options</b>
+	  </td>
+	</tr>
+      </tbody></table>
+    </td>
+  </tr>
+  </tbody><tbody id="outputParameters">
+    <tr>
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_NumberOfPeaksToReturn.html')">
+	  Number of peaks<br>to return
+	</a>
+      </td>
+      <td class="col2">
+	<input name="N" id="NumberOfPeaksToReturn" value="5" size="12" type="text">
+      </td>
+      <td style="display:;" class="col3">
+	<input disabled="disabled" id="oldNumberOfPeaksToReturn" value="5" size="12" type="text">
+      </td>
+    </tr>
+    <tr>
+      <td class="col1">
+	<a href="javascript:popHelp('/applications/Periodogram/help/phelp_PeakSignificanceThreshold.html')">
+	  Peak significance threshold (P-Value)
+	</a>
+      </td>
+      <td class="col2">
+	<input name="S" id="PeakSignificanceThreshold" value="1" size="12" type="text">
+      </td>
+      <td style="display:;" class="col3">
+	<input disabled="disabled" id="oldPeakSignificanceThreshold" value="1" size="12" type="text">
+      </td>
+    </tr>
+  </tbody>
+
+  <!-- stat parameters -->
+  <!--
+  <tr><td colspan="0"> </td></tr>
+  <tr style="display:;">
+  <td class="col1" colspan="3">
+  <table class="toggle" width="100%">
+  <tr>
+  <td class="col2t"
+  onclick="javascript:toggleDisplay('statParameters',
+  'statParametersFlag')">
+  <b>Statistical options (click to expand/collapse)</b>
+	    </td>
+	  </tr>
+	</table>
+      </td>
+    </tr>
+  <tbody id="statParameters" style='display:none;' >
+  <tr  style="display:;" id="stat_reuse">
+  <td class="col1">
+  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_StatReuse.html')">
+  Set statistical parameters for the next run?
+	  </a>
+	</td>
+  <td class="col2">
+  <select  name="reuseparams" id="StatReuse" 
+  onchange="toggleStatDisplay(this.value);">
+  <option value="0" selected="selected">No</option>
+  <option value="1">Yes</option>
+	  </select>
+	</td>    		
+  <td style="display:;" class="col3"></td>
+      </tr>     	    	 
+  <tr style="display:;" id="stat_num">
+  <td class="col1">
+  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_StatNumberOfSamples.html')">
+  Number of samples used to compute significance
+	  </a>
+	</td>
+  <td class="col2">
+  <input  name="K" id="StatNumberOfSamples"
+  
+  type="text" value="111" size="12"/>
+	</td>
+  <td style="display:;" class="col3">
+  <input disabled="disabled" id="oldStatNumberOfSamples"
+  type="text" value="111" size="12"/>
+	</td>
+      </tr>    	
+  <tr style="display:;" id="stat_mean">
+  <td class="col1">
+  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_StatMean.html')">
+  Mean of distribution
+	  </a>
+	</td>
+  <td class="col2">
+  <input  name="M" id="StatMean"
+  
+  type="text" value="0.000000" size="12"/>
+	</td>
+  <td style="display:;" class="col3">
+  <input disabled="disabled" id="oldStatMean"
+  type="text" value="0.000000" size="12"/></td>
+      </tr> 
+  <tr style="display:;" id="stat_dev">
+  <td class="col1">
+  <a href="javascript:popHelp('/applications/Periodogram/help/phelp_StatStandardDeviation.html')">
+  Standard deviation of distribution
+	  </a>
+	</td>
+  <td class="col2">
+  <input  name="V" id="StatStandardDeviation"
+  
+  type="text" value="0.000000" size="12"/>
+	</td>
+  <td style="display:;" class="col3">
+  <input disabled="disabled" id="oldStatStandardDeviation"
+  type="text" value="0.000000" size="12"/>
+	</td>
+      </tr>
+    </tbody>
+  -->
+
+  <!-- Control parameters -->
+
+  <tbody><tr style="display:none;">
+    <td class="col1">Local file flag</td>
+    <td class="col2">
+      <input name="l" id="LocalFileFlag" size="20" value="0" type="text">
+    </td>
+  </tr>
+
+  <tr style="display:none;">
+    <td class="col1">Long arg flag</td>
+    <td class="col2">
+      <input id="LongArgFlag" name="long" value="0" type="text">
+    </td>
+  </tr>
+  
+  <tr style="display:none;">
+    <td class="col1">makeXML</td>
+    <td class="col2">
+      <input name="xml" id="makeXML" size="20" value="0" type="text">
+    </td>
+  </tr>
+
+  <tr style="display:none;">
+    <td class="col1">batchFlag</td>
+    <td class="col2">
+      <input name="batch" id="BatchFlag" size="20" value="0" type="text">
+    </td>
+  </tr>
+  
+  <tr style="display:none">
+    <td> <input name="directory" id="directory" value="/work/TMP_WBXPtk_553/Pgram/14666" disabled="disabled" type="text">
+    </td>
+  </tr>
+  
+  
+  <tr style="display:none;">
+    <td class="col1">Background status file</td>
+    <td class="col2">
+      <input id="BackgroundStatusFile" value="None" type="text">
+    </td>
+  </tr>
+  
+  <tr style="display:none;">
+    <td class="col1">Background config file</td>
+    <td class="col2">
+      <input id="BackgroundConfigFile" value="None" type="text">
+    </td>
+  </tr>
+  
+  <!-- RemoteConfigFile and RemotePort  -->
+<!--
+  <tr style="display:none;">
+    <td class="col1">Remote Configuration File</td>
+    <td class="col2">
+      <input  name="g" id="RemoteConfigFile" type="text" size="20"
+	value="/stage/msca-sw-nsted-ops-juno/cm/ops_3.0/exo/share/wsvc/Periodogram/remoteServerConfig.txt"/>
+    </td>
+  </tr>
+-->
+  <tr style="display:none;">
+    <td class="col1">Remote Port</td>
+    <td class="col2">
+      <input name="t" id="RemotePort" size="20" value="5550" type="text">
+    </td>
+  </tr>
+  <tr style="display:none;">
+    <td class="col1">HostURL</td>
+    <td class="col2">
+      <input name="HostURL" id="HostURL" size="20" value="http://exoplanetarchive.ipac.caltech.edu" type="text">
+    </td>
+  </tr>
+
+  <tr>
+    <th colspan="3" align="center" bgcolor="#00356f">
+      <input value="Create Periodogram" class="hoverbut" onclick="if (checkConstraint() == false) return false;  return true;" type="submit">
+    </th>
+  </tr>
+
+  </tbody></table>
+  </form>
+
+</div>
+
+</div>
+
+
+<div style="clear:left">
+      <!-- close the cell and table of pgcRight the output appeared in -->
+
+
+
+<!-- close the pgramCommon table  -->
+
+
+
+
+</div> <!-- end output -->
+<div class="bbox">
+<div class="b2box">
+<div class="tbox">
+  <p><a href="http://www.nasa.gov/" title="National Aeronautics and Space Administration">
+        <img src="nph-bgExec_files/NASA_small.jpg" alt="NASA" height="75" width="87"></a>
+    <a href="http://www.ipac.caltech.edu/" title="Infrared Processing and Analysis Center">
+        <img src="nph-bgExec_files/IPAC_small.jpg" alt="IPAC" height="75" width="139"></a>
+    <a href="http://nexsci.caltech.edu/" title="NASA Exoplanet Science Institute">
+        <img src="nph-bgExec_files/logo_nexsci.gif" alt="NExScI"></a>
+    <a href="http://www.caltech.edu/" title="California Institute of Technology">
+        <img src="nph-bgExec_files/caltech.gif" alt="Caltech" height="80" width="79"></a></p>
+</div> <!-- end tbox div -->
+<div class="hbox">
+<table>
+<tbody><tr>
+  <td>&nbsp; &nbsp; &nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/index.html">Home</a></td>
+  <td>&nbsp; | &nbsp; &nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/docs/intro.html">Overview and Holdings</a></td>
+  <td> &nbsp;&nbsp; | &nbsp;&nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/docs/documentation.html">Documentation</a></td>
+  <td> &nbsp;&nbsp; | &nbsp;&nbsp; </td>
+  <td><a href="http://exoplanetarchive.ipac.caltech.edu/applications/Helpdesk">Helpdesk</a></td>
+  <td> &nbsp;&nbsp; &nbsp;&nbsp; </td>
+</tr>
+</tbody></table>
+</div> <!-- end hbox div -->
+
+</div> <!-- end b2box -->
+</div> <!-- end bbox -->
+</div> <!-- end content -->
+
+
+  
+
+</div></div></div></body></html>
