@@ -25,3 +25,22 @@ if(pdfs) dev.off()
 #newDev()
 #hist(periodTable$sd[sel])
 
+lowSdPeriodEcdf = ecdf(periodTable$meanPeriod[sel])
+
+medianLowSdPeriod = median(periodTable$meanPeriod[sel], na.rm=T)
+
+medianLowSdSel =
+  sel &
+  periodTable$meanPeriod > medianLowSdPeriod * .9 &
+  periodTable$meanPeriod < medianLowSdPeriod * 1.1
+
+newDev('spike_lag_ecdf.pdf')
+plot(ecdf(
+  periodTable$offsetTime[medianLowSdSel]))
+if(pdfs) dev.off()
+
+newDev('spike_lag_vs_node.pdf')
+plot(
+  #periodTable$node[medianLowSdSel],
+     periodTable$offsetTime[medianLowSdSel])
+if(pdfs) dev.off()
