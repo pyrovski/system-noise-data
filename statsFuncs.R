@@ -6,6 +6,20 @@
 #  - for an 11-element filter, use 10x higher than the median
 # - locations where the original time series is X% higher than the median, with nearby samples smoothed together
 
+newDev = function(name=NULL){
+#  if(length(ls(name=-1,pattern = 'pdfs')) == 0)
+#    pdfs=F
+  if(pdfs){
+    if(!is.null(name)){
+      if(length(grep('pdf$', name)) == 0)
+        name = paste(name, 'pdf', sep='.')
+      result = pdf(name)
+    } else
+      result = pdf()
+  } else
+    result = dev.new()
+}
+
 getPeakSteps = function(input){
   peakSteps = input
   input$filtered = filter(input$DURATION.sec., rep(1, 11)/11)
@@ -38,5 +52,9 @@ estimatePeriod = function(input){
   
   return(list(
     mean=mean(meanDiffs),
-    sd=sd(meanDiffs)))
+    sd=sd(meanDiffs),
+    median=median(meanDiffs),
+    min=min(meanDiffs),
+    max=max(meanDiffs),
+    offsetTime=min(startTimes)))
 }
