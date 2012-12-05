@@ -10,19 +10,26 @@ args = commandArgs(trailingOnly=T)
 if(length(args)){
   filename = args[1]
 }else{
-  filename = 'rzmerl154.500.dat'
+  filename = 'rzmerl114_0_0.dat'
 }
 
 a = read.table(filename, header=T)
 
 # identify file type: time or cycles
 if(length(grep('tick', names(a))) > 0){
+  startName = 'START.tick.'
+  durationName = 'DURATION.tick.'
+
 # if cycles, add cycle offset to each row
   lines = readLines(filename, 20)
   eval(parse(text=sub('#','',grep('START_TICK', lines, value=T))))
   a$START.tick. = a$START.tick. + START_TICK
+} else {
+  startName = 'START.sec.'
+  durationName = 'DURATION.sec.'
 }
 
-a = getPeakSteps(a)
-periodEstimate = estimatePeriod(a)
+a = getPeakSteps(a, durationName=durationName)
+periodEstimate = estimatePeriod(a, durationName=durationName,
+  startName=startName)
 cat(paste(paste(names(periodEstimate), periodEstimate, collapse=' '), '\n'))
