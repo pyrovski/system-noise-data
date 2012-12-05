@@ -22,9 +22,10 @@ newDev = function(name=NULL){
 
 #! @todo figure out how to eliminate short period estimates
 # - obvious ways: increase filter length, require minimum period
-getPeakSteps = function(input, filterLength=21, medThreshold=10){
-  peakSteps = input
-  input$filtered = filter(input$DURATION.sec., rep(1, filterLength)/filterLength)
+getPeakSteps = function(input, filterLength=21, medThreshold=10,
+    durationName='DURATION.sec.'){
+#! @todo filtering works much faster on vectors/matrices
+  input$filtered = filter(input[[durationName]], rep(1, filterLength)/filterLength)
   input$filtered[which(is.na(input$filtered))] = 0
   sel = input$filtered >= medThreshold*median(input$filtered)
   input$steps = 0
@@ -34,7 +35,8 @@ getPeakSteps = function(input, filterLength=21, medThreshold=10){
 }
 
 # get mean low and high time between spike edges and add them
-estimatePeriod = function(input){
+estimatePeriod = function(input, startName='START.sec.',
+  durationName='DURATION.sec.'){
   stepsRLE = rle(as.vector(input$steps))
 
   # assume first sample is zero
@@ -43,8 +45,8 @@ estimatePeriod = function(input){
   starts = transitionIndices[seq(1, length(transitionIndices), 2)]
   ends = transitionIndices[seq(2, length(transitionIndices), 2)]
 
-  startTimes = input$START.sec.[starts]
-  endTimes = input$START.sec.[ends]
+  startTimes = input[[startName]][starts]
+  endTimes = input[[startName]][ends]
 
   startDiffs = diff(startTimes)
   endDiffs = diff(endTimes)
@@ -52,7 +54,8 @@ estimatePeriod = function(input){
   # this finds the middle of each spike, not necessarily the maximum
   meanDiffs = diff((startTimes + endTimes)/2)
 
-  overageFraction = sum(input$DURATION.sec.) / diff(range(input$START.sec.))
+  overageFraction = sum(input[[durationName]]) /
+    diff(range(input[[startName]]))
   
   return(list(
     mean=mean(meanDiffs),
