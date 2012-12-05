@@ -20,14 +20,16 @@ newDev = function(name=NULL){
     result = dev.new()
 }
 
-getPeakSteps = function(input){
+#! @todo figure out how to eliminate short period estimates
+# - obvious ways: increase filter length, require minimum period
+getPeakSteps = function(input, filterLength=21, medThreshold=10){
   peakSteps = input
-  input$filtered = filter(input$DURATION.sec., rep(1, 11)/11)
+  input$filtered = filter(input$DURATION.sec., rep(1, filterLength)/filterLength)
   input$filtered[which(is.na(input$filtered))] = 0
-  sel = input$filtered >= 20*median(input$DURATION.sec.)
-  input$steps = input$filtered
+  sel = input$filtered >= medThreshold*median(input$filtered)
+  input$steps = 0
   input$steps[sel] = 1
-  input$steps[!sel] = 0
+#  input$steps[!sel] = 0
   return(input)
 }
 
