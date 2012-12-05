@@ -34,6 +34,10 @@ medianLowSdSel =
   periodTable$meanPeriod > medianLowSdPeriod * .9 &
   periodTable$meanPeriod < medianLowSdPeriod * 1.1
 
+wellBehaved = sapply(list(which(medianLowSdSel), medianLowSdSel), length)
+wellBehaved = wellBehaved[[1]] / wellBehaved[[2]]
+cat(paste(100*wellBehaved,'% have period standard deviations within 10% of the median sd\n'))
+
 newDev('spike_lag_ecdf.pdf')
 plot(ecdf(
   periodTable$offsetTime[medianLowSdSel]),
