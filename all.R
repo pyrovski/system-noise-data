@@ -40,12 +40,25 @@ plot(ecdf(
      main='first spike lag CDF')
 if(pdfs) dev.off()
 
-newDev('spike_lag_vs_node.pdf')
+newDev('spike_lag_vs_rank_all.pdf')
+plot(
+#periodTable$node[medianLowSdSel],
+#  periodTable$offsetTime[medianLowSdSel],
+  periodTable$offsetTime,
+  main='spike lag',
+  ylab='time to first spike',
+  xlab='rank'
+  )
+if(pdfs) dev.off()
+
+newDev('spike_lag_vs_rank.pdf')
 plot(
 #periodTable$node[medianLowSdSel],
 #  periodTable$offsetTime[medianLowSdSel],
   periodTable$offsetTime[sel],
-  main='spike lag'
+  main='spike lag',
+  ylab='time to first spike',
+  xlab='rank'
   )
 if(pdfs) dev.off()
 
