@@ -36,11 +36,17 @@ medianLowSdSel =
 
 newDev('spike_lag_ecdf.pdf')
 plot(ecdf(
-  periodTable$offsetTime[medianLowSdSel]))
+  periodTable$offsetTime[medianLowSdSel]),
+     main='first spike lag CDF')
 if(pdfs) dev.off()
 
 newDev('spike_lag_vs_node.pdf')
 plot(
-  #periodTable$node[medianLowSdSel],
-     periodTable$offsetTime[medianLowSdSel])
+#periodTable$node[medianLowSdSel],
+#  periodTable$offsetTime[medianLowSdSel],
+  periodTable$offsetTime[sel],
+  main='spike lag'
+  )
 if(pdfs) dev.off()
+
+#! @todo find a way to show spike lag variance within a node
