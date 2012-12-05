@@ -49,6 +49,8 @@ estimatePeriod = function(input){
 
   # this finds the middle of each spike, not necessarily the maximum
   meanDiffs = diff((startTimes + endTimes)/2)
+
+  overageFraction = sum(input$DURATION.sec.) / diff(range(input$START.sec.))
   
   return(list(
     mean=mean(meanDiffs),
@@ -56,5 +58,7 @@ estimatePeriod = function(input){
     median=median(meanDiffs),
     min=min(meanDiffs),
     max=max(meanDiffs),
-    offsetTime=min(startTimes)))
+    offsetTime=min(startTimes),
+    overageFraction=overageFraction
+    ))
 }
