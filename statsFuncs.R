@@ -36,7 +36,7 @@ getPeakSteps = function(input, filterLength=21, medThreshold=10,
 
 # get mean low and high time between spike edges and add them
 estimatePeriod = function(input, startName='START.sec.',
-  durationName='DURATION.sec.'){
+  durationName='DURATION.sec.', func=median){
   stepsRLE = rle(as.vector(input$steps))
 
   # assume first sample is zero
@@ -54,16 +54,24 @@ estimatePeriod = function(input, startName='START.sec.',
   # this finds the middle of each spike, not necessarily the maximum
   meanDiffs = diff((startTimes + endTimes)/2)
 
-  overageFraction = sum(input[[durationName]]) /
+  overageFraction = sum(as.numeric(input[[durationName]])) /
     diff(range(input[[startName]]))
   
   return(list(
-    mean=mean(meanDiffs),
-    sd=sd(meanDiffs),
-    median=median(meanDiffs),
-    min=min(meanDiffs),
-    max=max(meanDiffs),
-    offsetTime=min(startTimes),
-    overageFraction=overageFraction
+    list(
+      mean=mean(meanDiffs),
+      sd=sd(meanDiffs),
+      median=func(meanDiffs),
+      min=min(meanDiffs),
+      max=max(meanDiffs),
+      offsetTime=min(startTimes),
+      overageFraction=overageFraction
+      ),
+    list(
+      stepsRLE=stepsRLE,
+      transitionIndices=transitionIndices,
+      starts=starts,
+      ends=ends
+      )
     ))
 }

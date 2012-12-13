@@ -31,5 +31,5 @@ if(length(grep('tick', names(a))) > 0){
 
 a = getPeakSteps(a, durationName=durationName)
 periodEstimate = estimatePeriod(a, durationName=durationName,
-  startName=startName)
+  startName=startName)[[1]]
 cat(paste(paste(names(periodEstimate), periodEstimate, collapse=' '), '\n'))

@@ -35,5 +35,5 @@ for(filename in sort(periodTable$file)){
 o = order(combined[[startName]])
 combined = combined[o,]
 
-#write.table(combined, 'combined.dat', quote=F, row.names=F)
+write.table(combined, 'combined.dat', quote=F, row.names=F)
 # a = read.table('combined.dat', header=T, colClasses=c('numeric','integer'))
