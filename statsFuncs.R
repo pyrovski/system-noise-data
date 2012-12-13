@@ -23,11 +23,11 @@ newDev = function(name=NULL){
 #! @todo figure out how to eliminate short period estimates
 # - obvious ways: increase filter length, require minimum period
 getPeakSteps = function(input, filterLength=21, medThreshold=10,
-    durationName='DURATION.sec.'){
+    durationName='DURATION.sec.', func=median){
 #! @todo filtering works much faster on vectors/matrices
-  input$filtered = filter(input[[durationName]], rep(1, filterLength)/filterLength)
+  input$filtered = filter(as.vector(input[[durationName]]), rep(1, filterLength)/filterLength)
   input$filtered[which(is.na(input$filtered))] = 0
-  sel = input$filtered >= medThreshold*median(input$filtered)
+  sel = input$filtered >= medThreshold*func(input$filtered)
   input$steps = 0
   input$steps[sel] = 1
 #  input$steps[!sel] = 0
